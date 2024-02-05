@@ -17,30 +17,6 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/hello-lumen', function () use ($router){
-    return "<h1>Lumen</h1><p>Hi good developer, thank for using Lumen</p>";
-});
-
-$router->get('/welcome', function () {
-    return "<h1>Selamat Datang di Web</h1><p>Mari belajar Lumen.</p>";
-});
-
-$router->get('/welcome/{name}', function ($name) {
-    return "<h1>Selamat Datang $name</h1><p>Mari belajar Lumen.</p>";
-});
-
-$router->get('/hallo/{name}', function ($name) {
-    return "<h1>HAllO!!  $name</h1><p>Kita akan memulai pembelajaran</p>";
-});
-
-$router->get('/start/{name}', function ($name) {
-    return "<h1>Get Started  $name</h1><p>Mari Kita Mulai ya teman teman</p>";
-});
-
-$router->get('/tugas', ['middleware' => 'login', function(){
-    return "<h1>Hallo Jumpa Lagi kita</h1>";
-}]);
-
 //posts
 $router->get('posts', 'PostsController@index');
 $router->post('/posts', 'PostsController@store');
@@ -62,16 +38,51 @@ $router->get('tags/{id}', 'TagsController@show');
 $router->put('tags/{id}', 'TagsController@update');
 $router->delete('tags/{id}', 'TagsController@destroy');
 
-//comments
-$router->get('comments', 'CommentsController@index');
-$router->post('comments', 'CommentsController@store');
-$router->get('comments/{id}', 'CommentsController@show');
-$router->put('comments/{id}', 'CommentsController@update');
-$router->delete('comments/{id}', 'CommentsController@destroy');
-
 //categories
 $router->get('categories', 'CategoriesController@index');
 $router->post('categories', 'CategoriesController@store');
 $router->get('categories/{id}', 'CategoriesController@show');
 $router->put('categories/{id}', 'CategoriesController@update');
 $router->delete('categories/{id}', 'CategoriesController@destroy');
+
+//produk
+$router->get('produks', 'ProduksController@index');
+$router->post('produks', 'ProduksController@store');
+$router->get('produks/{id}', 'ProduksController@show');
+$router->put('produks/{id}', 'ProduksController@update');
+$router->delete('produks/{id}', 'ProduksController@destroy');
+
+//pesanans
+$router->get('orders', 'OrdersController@index');
+$router->get('orders/{id}', 'OrdersController@show');
+$router->post('orders', 'OrdersController@store');
+$router->put('orders/{id}', 'OrdersController@update');
+$router->delete('orders/{id}', 'OrdersController@destroy');
+
+//payments
+Route::get('payments', 'PaymentsController@index');
+Route::get('payments/{id}', 'PaymentsController@show');
+Route::post('payments', 'PaymentsController@store');
+Route::put('payments/{id}', 'PaymentsController@update');
+Route::delete('payments/{id}', 'PaymentsController@destroy');
+
+$router->group(['prefix' => 'auth'], function () use ($router){
+    $router->post('/register','AuthController@register');
+    $router->post('/login','AuthController@login');
+});
+
+$router->group(['middleware' => 'auth'], function () use ($router) {
+    // Orders
+    $router->get('orders', 'OrdersController@index');
+    $router->get('orders/{id}', 'OrdersController@show');
+    $router->post('orders', 'OrdersController@store');
+    $router->put('orders/{id}', 'OrdersController@update');
+    $router->delete('orders/{id}', 'OrdersController@destroy');
+
+    // Payments
+    $router->get('payments', 'PaymentsController@index');
+    $router->get('payments/{id}', 'PaymentsController@show');
+    $router->post('payments', 'PaymentsController@store');
+    $router->put('payments/{id}', 'PaymentsController@update');
+    $router->delete('payments/{id}', 'PaymentsController@destroy');
+});

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('season')->nullable(); // Musim
             $table->string('material')->nullable(); // Bahan
             $table->timestamps();
-            $table->softDeletes(); // Jika menggunakan soft delete
+            $table->softDeletes(); 
         });
     }
 
